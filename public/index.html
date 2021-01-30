@@ -1,10 +1,29 @@
 <!doctype html>
 <html>
 <head>
-    <title></title>
+    <title>My ImageBoard</title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 </head>
 <body>
-    <script src="/js/vue.js"></script>
-    <script src="/js/axios.min.js"></script>
+    <!-- This container is for vue -->
+<div id="main">
+
+
+<div v-for="item in images">
+
+    <img width="200" height="200":src="item.url" alt="">
+    <p>{{item.title}}</p>
+
+</div>
+
+
+
+
+<!-- end of container -->
+</div>
+
+<!-- <script src="/js/vue.js"></script> -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/js/script.js"></script>
 </body>
 </html>
