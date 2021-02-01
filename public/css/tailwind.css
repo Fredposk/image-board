@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .form {
-    @apply w-3/4 py-1 pl-2 text-sm text-gray-700 bg-gray-300 rounded-lg shadow-md focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent;
+    @apply w-3/4 py-1 pl-2 text-sm text-gray-700 bg-gray-200 rounded-lg shadow-md focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent;
 }
 
 .submitBtn {
