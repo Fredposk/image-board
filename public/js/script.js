@@ -10,6 +10,7 @@
             username: '',
             file: null,
             isOpen: false,
+            isLoading: false,
         },
 
         // mounted is a lifecycle method that runs when the Vue instance renders
@@ -42,10 +43,18 @@
                 fd.append('description', this.description);
                 fd.append('username', this.username);
                 fd.append('file', this.file);
+                this.isLoading = true;
                 axios
                     .post('/upload', fd)
                     .then((response) => {
-                        console.log(response);
+                        // console.log(response);
+                        this.images.unshift(response.data);
+                        this.isOpen = false;
+                        this.title = '';
+                        this.description = '';
+                        this.username = '';
+                        this.file = null;
+                        this.isLoading = false;
                     })
                     .catch((err) => {
                         console.log(err);
