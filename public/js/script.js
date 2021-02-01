@@ -5,11 +5,15 @@
         // data - an object that we add any info to that is dynamic / we want to render onscreen
         data: {
             images: [],
+            title: '',
+            description: '',
+            username: '',
+            file: null,
+            isOpen: false,
         },
 
         // mounted is a lifecycle method that runs when the Vue instance renders
         mounted: async function () {
-            var self = this;
             // axios
             //     .get('/images')
             //     .then(function (response) {
@@ -23,7 +27,7 @@
             //     });
             try {
                 const data = await axios.get('/images');
-                self.images = data.data;
+                this.images = data.data;
             } catch (err) {
                 console.log('err in /images: ', err);
             }
@@ -31,8 +35,24 @@
 
         // methods will store ALL the functions we create!!!
         methods: {
-            myFunction: function () {
-                console.log('myFunction is running!!!!');
+            clickHandler: function () {
+                // console.log(this);
+                const fd = new FormData();
+                fd.append('title', this.title);
+                fd.append('description', this.description);
+                fd.append('username', this.username);
+                fd.append('file', this.file);
+                axios
+                    .post('/upload', fd)
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            },
+            fileSelectHandler: function (e) {
+                this.file = e.target.files[0];
             },
         },
     });

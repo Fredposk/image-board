@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.form {
+    @apply w-3/4 py-1 pl-2 text-sm text-gray-700 bg-gray-300 rounded-lg shadow-md focus:outline-none focus:bg-gray-200;
+}
+
+.submitBtn {
+    @apply px-2 py-1 text-sm antialiased font-semibold tracking-wider text-gray-200 uppercase duration-500 ease-in-out bg-purple-400 border-2 border-purple-900 rounded-md shadow-lg hover:bg-purple-700 hover:text-gray-200;
+}
