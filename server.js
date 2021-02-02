@@ -11,11 +11,20 @@ const db = require('./db');
 app.use(express.static('public'));
 app.use(express.static('dist'));
 // Logging middleware
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
+
+// body-parser
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/images', async (req, res) => {
     const images = await db.getImages();
     res.json(images.rows);
+});
+
+app.get('/modal/:modalImage', async (req, res) => {
+    const { modalImage } = req.params;
+    const modal = await db.getImageModal(modalImage);
+    res.json(modal.rows);
 });
 
 app.post('/upload', uploader.single('file'), s3.upload, async (req, res) => {

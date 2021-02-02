@@ -15,6 +15,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@jinsung.lim/tailwindcss-filters": "^0.1.1",
         "autoprefixer": "^10.2.4",
         "aws-sdk": "^2.476.0",
         "express": "^4.14.0",
