@@ -208,13 +208,13 @@
                 <!-- This is end of container -->
             </div>
             <!-- This is the modal -->
-
-            <modelcomponent
-                v-if="modelOpened"
-                :id="selectedImage"
-                @close="closeMe"
-            ></modelcomponent>
-
+            <div class="fixed z-40 top-4">
+                <modelcomponent
+                    v-if="modelOpened"
+                    :id="selectedImage"
+                    @close="closeMe"
+                ></modelcomponent>
+            </div>
             <!-- This is the modal end -->
             <!-- end of vue container -->
         </div>
