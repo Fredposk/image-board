@@ -12,9 +12,9 @@
         mounted: async function () {
             try {
                 const data = await axios.get(`/modal/${this.id}`);
-                this.modalImage = data.data[0];
-                this.postDate = data.data[0].created_at;
-                console.log(this.postDate);
+                // console.log(data.data.data[0]);
+                this.modalImage = data.data.data[0];
+                this.postDate = data.data.date;
             } catch (err) {
                 console.log('err in /-Component: ', err);
             }

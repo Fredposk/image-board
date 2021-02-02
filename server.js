@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const moment = require('moment');
 const { uploader } = require('./upload');
 const s3 = require('./s3');
 const { s3Url } = require('./config.json');
@@ -11,7 +12,7 @@ const db = require('./db');
 app.use(express.static('public'));
 app.use(express.static('dist'));
 // Logging middleware
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 
 // body-parser
 app.use(express.urlencoded({ extended: false }));
@@ -24,7 +25,11 @@ app.get('/images', async (req, res) => {
 app.get('/modal/:modalImage', async (req, res) => {
     const { modalImage } = req.params;
     const modal = await db.getImageModal(modalImage);
-    res.json(modal.rows);
+
+    var date = new Date(`${modal.rows[0].created_at}`);
+    const date2 = moment(date).fromNow();
+
+    res.json({ data: modal.rows, date: `${date2}` });
 });
 
 app.post('/upload', uploader.single('file'), s3.upload, async (req, res) => {
