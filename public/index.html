@@ -14,6 +14,7 @@
                         class="flex flex-row items-center justify-between pt-2 sm:justify-start"
                     >
                         <input
+                            v-model="searchbar"
                             id="searchbar"
                             type="text"
                             placeholder=" Search"
@@ -27,6 +28,7 @@
                                 class="flex items-center m-1 mt-2 ml-1 sm:ml-5"
                             >
                                 <img
+                                    @click="searchfunction"
                                     class="w-6 h-6 mr-4 cursor-pointer lg:w-7 lg:h-7 opacity-70"
                                     src="/search.svg"
                                 />
@@ -36,10 +38,11 @@
                                     src="/share-01.svg"
                                 />
                             </div>
-                            <img
-                                class="absolute hidden w-32 m-1 mr-4 h-7 top-3 right-2 sm:block md:h-8 md:w-36"
-                                src="/spiced.png"
-                            />
+                            <a href="/">
+                                <img
+                                    class="absolute hidden w-32 m-1 mr-4 cursor-pointer hover:opacity-70 h-7 top-3 right-2 sm:block md:h-8 md:w-36"
+                                    src="/spiced.png"
+                            /></a>
                             <!-- This is the hidden upload container -->
                             <button
                                 v-if="isOpen || modelOpened"
@@ -61,6 +64,7 @@
                                         type="text"
                                         name="title"
                                         id="title"
+                                        maxlength="65"
                                         placeholder="title"
                                     />
                                     <input
@@ -69,6 +73,7 @@
                                         type="text"
                                         name="description"
                                         id="description"
+                                        maxlength="65"
                                         placeholder="description"
                                     />
                                     <input
@@ -77,6 +82,7 @@
                                         type="text"
                                         name="username"
                                         id="username"
+                                        maxlength="65"
                                         placeholder="username"
                                     />
                                     <input
@@ -180,7 +186,20 @@
                     </div>
                 </div>
                 <!-- Here is footer  -->
-
+                <div
+                    @click="loadMore"
+                    class="absolute right-0 w-8 h-8 mb-6 mr-4 text-purple-600 cursor-pointer"
+                >
+                    <svg
+                        class="fill-current"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            d="M11 9h4v2h-4v4H9v-4H5V9h4V5h2v4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
+                        />
+                    </svg>
+                </div>
                 <div
                     class="sticky z-10 px-4 py-1 mx-auto bg-gray-200 shadow-2xl lg:py-2 lg:px-6 bottom-3 lg:bottom-4 rounded-3xl max-w-max"
                 >
@@ -205,15 +224,19 @@
                         /></a>
                     </div>
                 </div>
+
                 <!-- This is end of container -->
             </div>
             <!-- This is the modal -->
-            <div class="fixed z-40 top-4">
-                <modelcomponent
-                    v-if="modelOpened"
-                    :id="selectedImage"
-                    @close="closeMe"
-                ></modelcomponent>
+            <div class="flex justify-center">
+                <div class="fixed z-30 top-4">
+                    <modelcomponent
+                        v-if="modelOpened"
+                        :id="selectedImage"
+                        @close="closeMe"
+                    >
+                    </modelcomponent>
+                </div>
             </div>
             <!-- This is the modal end -->
             <!-- end of vue container -->
@@ -222,50 +245,94 @@
         <!-- Modal component -->
 
         <script type="text/x-template" id="modal">
-            <div class="sticky z-50 w-10/12 mx-auto bg-gray-200 border-2 border-black rounded-lg inset-y-80 sm:w-9/12 md:w-3/4 lg:2/3">
-            <div>
-                <!-- Upper nav -->
-            <span class="flex items-center justify-between py-3 ml-3 space-x-4">
-                <div class="flex items-center space-x-4">
-                <img class="object-cover border-2 border-red-700 rounded-full cursor-pointer hover:opacity-90 h-9 w-9" src="https://source.unsplash.com/random">
-                <p class="inline-block text-sm italic font-bold text-black font-italic">{{modalImage.username}}:</p><p class="ml-1 text-sm font-normal tracking-wide text-gray-800 overflow-ellipsis">{{modalImage.description}}</p>
-                </div>
-                <div>
-                <p @click="closeModal"><svg  class="w-6 h-6 mx-4 cursor-pointer justify lg:h-7 lg:w-7 opacity-70 hover:opacity-95" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM11.4 10l2.83-2.83-1.41-1.41L10 8.59 7.17 5.76 5.76 7.17 8.59 10l-2.83 2.83 1.41 1.41L10 11.41l2.83 2.83 1.41-1.41L11.41 10z"/></svg></p>
+                        <div class="sticky z-40 bg-gray-200 border-2 border-black rounded-lg w-72 lg:w-96">
+                        <div>
+                            <!-- Upper nav -->
+                        <span class="flex items-center justify-between py-3 ml-3 space-x-4">
+
+                            <img class="object-cover border-2 border-pink-700 rounded-full cursor-pointer hover:opacity-90 h-9 w-9" src="https://source.unsplash.com/random">
+
+            <div class="flex truncate">
+                            <p class="text-sm italic font-bold text-black font-italic">{{modalImage.username}}:</p><p class="ml-1 text-sm font-normal tracking-wide text-gray-800 truncate">
+                                {{modalImage.title}}</p>
             </div>
 
-            </span>
-            <!-- Main img area, not yet responsive  - mobile-first-->
-              <img class="object-contain w-full shadow" :src="modalImage.url" alt="">
-              <!-- Title and date area -->
-              <div class="flex justify-between py-2 border-b border-black shadow-md">
-              <p class="inline-block ml-1 text-sm italic font-bold text-black font-italic">{{modalImage.title}} </p>
-              <p class="mr-2 text-sm font-normal tracking-wide text-gray-800 truncate">{{postDate}} </p>
-              </div>
-              <div class="flex justify-between py-3 bg-gray-300 rounded-b-lg">
-                  <!-- SVGs in bottom part -->
-                <div><img
-                            class="w-6 h-6 ml-3 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
-                            src="/heart.svg"
-                        /></div>
-                <div><img
-                            class="w-6 h-6 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
-                            src="/user.svg"
-                        /></div>
-                <div><img
-                            class="w-6 h-6 transform cursor-pointer -rotate-12 lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
-                            src="/send.svg"
-                        /></div>
-                <div><img
-                            class="w-6 h-6 mr-3 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
-                            src="/dots-horizontal-triple.svg"
-                        /></div>
-                        <!-- This ends the svg container-->
-              </div>
-              </div>
-            </div>
+                            </p>
+
+                            <div>
+                            <p @click="closeModal"><svg  class="w-6 h-6 mx-4 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM11.4 10l2.83-2.83-1.41-1.41L10 8.59 7.17 5.76 5.76 7.17 8.59 10l-2.83 2.83 1.41 1.41L10 11.41l2.83 2.83 1.41-1.41L11.41 10z"/></svg></p>
+                        </div>
+
+                        </span>
+                        <!-- Main img area,  - mobile-first-->
+                          <img class="object-cover mx-auto shadow" :src="modalImage.url" alt="">
+                          <!-- <img class="object-cover max-w-sm mx-auto shadow md:max-w-lg" :src="modalImage.url" alt=""> -->
+                          <!-- Title and date area -->
+                          <div class="flex justify-between py-2 border-b border-black shadow-md">
+                          <p class="ml-1 text-xs italic font-bold text-black font-italic">{{modalImage.description}} </p>
+                          <p class="mr-2 text-sm font-normal tracking-wide text-gray-800 truncate">{{postDate}} </p>
+                          </div>
+                          <div class="flex justify-between py-3 bg-gray-300 rounded-b-lg">
+                              <!-- SVGs in bottom part -->
+                            <div><img
+                                        class="w-6 h-6 ml-3 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
+                                        src="/heart.svg"
+                                    /></div>
+                            <div><img
+                                        class="w-6 h-6 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
+                                        src="/user.svg"
+                                    /></div>
+                            <div> <a target="_blank"  :href="modalImage.url"><img
+                                        class="w-6 h-6 transform cursor-pointer -rotate-12 lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
+                                        src="/send.svg"
+                                    /></a></div>
+                            <div @click="commentId = modalImage.id, isCommentOpen = !isCommentOpen"><img
+
+                                        class="w-6 h-6 mr-3 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
+                                        src="/chat-bubble-dots.svg"
+                                    /></div>
+                                    <!-- This ends the svg container-->
+                          </div>
+
+                          <commentcomponent
+                            v-if="isCommentOpen"
+                            :Cid="commentId"
+                        ></commentcomponent>
+
+                          </div>
+
+                        </div>
         </script>
         <!-- This ends the modal component -->
+
+        <!-- Here starts the comment component -->
+        <script type="text/x-template" id="comments">
+
+            <div class="relative top-0 z-50">
+                        <h1 class="bg-purple-800 bold"></h1>
+                        <div class="flex flex-col">
+                            <textarea class="my-1 commentBox" v-model="commentArea" name="comments" id="comments" placeholder=" Leave a comment"></textarea>
+                            <input class="my-1 commentBox" v-model="username" type="text" name="username" id="username" placeholder="username">
+                            <button class="submitBtn" @click="postcomment">Click to post</button>
+                            <svg
+                                            v-if="isWaiting"
+                                            class="w-4 h-4 ml-2 fill-current animate-spin"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"
+                                            />
+                                        </svg>
+                        </div>
+                        <ul v-for="comment in reversedComments">
+                            <li class="bg-gray-100">{{comment.username}}: {{comment.comment}} - {{new Date(comment.commented_at).toLocaleDateString('en-GB')}}</li>
+                        </ul>
+                        </div>
+        </script>
+
+        <!-- here ends the comment component-->
+
         <!-- <script src="/js/vue.js"></script> -->
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

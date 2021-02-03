@@ -4,7 +4,13 @@ const db = spicedPg(
         'postgres:postgres:postgres@localhost:5432/image_board'
 );
 
-module.exports.getImages = () => db.query(`SELECT * FROM images;`);
+module.exports.getImages = () =>
+    db.query(`SELECT * FROM images ORDER BY created_at DESC limit 9;`);
+
+module.exports.getMoreImages = (date) =>
+    db.query(
+        `SElect * from images where created_at < '${date}' order by created_at DESC LIMIT 6`
+    );
 
 module.exports.uploadImages = (url, username, title, description) => {
     const q = `INSERT into images (url, username, title, description) VALUES ($1, $2, $3, $4) RETURNING *`;
@@ -14,6 +20,18 @@ module.exports.uploadImages = (url, username, title, description) => {
 
 module.exports.getImageModal = (id) => {
     const q = `SELECT * FROM images WHERE id = $1`;
+    const params = [id];
+    return db.query(q, params);
+};
+
+module.exports.uploadComment = (comment, username, id) => {
+    const q = `INSERT into comments (comment, username, id) VALUES ($1, $2, $3) RETURNING *`;
+    const params = [comment, username, id];
+    return db.query(q, params);
+};
+
+module.exports.getComments = (id) => {
+    const q = `SELECT * FROM comments WHERE id = $1`;
     const params = [id];
     return db.query(q, params);
 };

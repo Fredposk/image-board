@@ -1,19 +1,20 @@
 (function () {
-    // Class tuesday
     Vue.component('modelcomponent', {
         template: '#modal',
         data: function () {
             return {
                 modalImage: [],
                 postDate: '',
+                isCommentOpen: false,
+                commentId: undefined,
             };
         },
         props: ['id'],
         mounted: async function () {
             try {
                 const data = await axios.get(`/modal/${this.id}`);
-                // console.log(data.data.data[0]);
                 this.modalImage = data.data.data[0];
+                // console.log(this.modalImage);
                 this.postDate = data.data.date;
             } catch (err) {
                 console.log('err in /-Component: ', err);
@@ -22,6 +23,56 @@
         methods: {
             closeModal: function () {
                 this.$emit('close');
+                this.isCommentOpen = false;
+                this.commentId = undefined;
+            },
+        },
+    });
+
+    Vue.component('commentcomponent', {
+        template: '#comments',
+        data: function () {
+            return {
+                comments: [],
+                commentArea: '',
+                username: '',
+                isWaiting: false,
+            };
+        },
+        props: ['Cid'],
+        mounted: function () {
+            axios
+                .get(`/comment/${this.Cid}`)
+                .then((response) => {
+                    this.comments = response.data;
+                })
+                .catch((error) => {
+                    console.log(error, 'error getting all comments');
+                });
+        },
+        computed: {
+            reversedComments() {
+                return this.comments.slice(0).reverse();
+            },
+        },
+        methods: {
+            postcomment: function () {
+                this.isWaiting = true;
+                axios
+                    .post('/comment', {
+                        comment: `${this.commentArea}`,
+                        id: `${this.Cid}`,
+                        username: `${this.username}`,
+                    })
+                    .then((response) => {
+                        this.comments.push(response.data);
+                        this.commentArea = '';
+                        this.username = '';
+                        this.isWaiting = false;
+                    })
+                    .catch((err) =>
+                        console.log(err, 'error in comment posting')
+                    );
             },
         },
     });
@@ -41,6 +92,8 @@
             isLiked: undefined,
             selectedImage: undefined,
             modelOpened: false,
+            searchbar: '',
+            lastImage: '',
         },
 
         // mounted is a lifecycle method that runs when the Vue instance renders
@@ -48,9 +101,15 @@
             try {
                 const data = await axios.get('/images');
                 this.images = data.data;
+                this.lastImage = this.images[this.images.length - 1].created_at;
             } catch (err) {
                 console.log('err in /images: ', err);
             }
+        },
+        computed: {
+            reversedImages() {
+                return this.images.slice(0).reverse();
+            },
         },
 
         // methods will store ALL the functions we create!!!
@@ -66,7 +125,6 @@
                 axios
                     .post('/upload', fd)
                     .then((response) => {
-                        // console.log(response);
                         this.images.unshift(response.data);
                         this.isOpen = false;
                         this.title = '';
@@ -74,6 +132,9 @@
                         this.username = '';
                         this.file = null;
                         this.isLoading = false;
+                        this.lastImage = this.images[
+                            this.images.length - 1
+                        ].created_at;
                     })
                     .catch((err) => {
                         console.log(err, 'in the consoleLog for the script');
@@ -83,9 +144,25 @@
                 this.file = e.target.files[0];
             },
             closeMe: function () {
-                // console.log('heard the close');
                 this.selectedImage = undefined;
                 this.modelOpened = false;
+            },
+            loadMore: function () {
+                axios
+                    .get(`/loadmore/${this.lastImage}`)
+                    .then((response) => {
+                        this.images.push(...response.data);
+                        this.lastImage = this.images[
+                            this.images.length - 1
+                        ].created_at;
+                        // console.log(response);
+                    })
+                    .catch((err) => {
+                        console.log('error getting more images');
+                    });
+            },
+            searchfunction: function () {
+                console.log('search Images', this.searchbar);
             },
         },
     });

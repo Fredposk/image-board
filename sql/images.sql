@@ -29,3 +29,13 @@ INSERT INTO images (url, username, title, description) VALUES (
     'To be or not to be',
     'That is the question.'
 );
+
+DROP TABLE IF EXISTS comments;
+CREATE TABLE comments (
+    comments_id UUID DEFAULT uuid_generate_v4 (),
+     comment VARCHAR NOT NULL CHECK (comment != ''),
+  	username VARCHAR NOT NULL CHECK (username != ''),
+  commented_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  id UUID NOT NULL REFERENCES images(id),
+    PRIMARY KEY (comments_id)
+);
