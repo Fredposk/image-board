@@ -162,7 +162,12 @@
                     });
             },
             searchfunction: function () {
-                console.log('search Images', this.searchbar);
+                // console.log('search Images', this.searchbar);
+                const searchResults = this.images.filter((image) => {
+                    const regex = new RegExp(this.searchbar, 'gi');
+                    image.title.match(regex) || image.description.match(regex);
+                });
+                console.log(searchResults);
             },
         },
     });

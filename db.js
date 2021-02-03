@@ -5,11 +5,11 @@ const db = spicedPg(
 );
 
 module.exports.getImages = () =>
-    db.query(`SELECT * FROM images ORDER BY created_at DESC limit 9;`);
+    db.query(`SELECT * FROM images ORDER BY created_at DESC limit 12;`);
 
 module.exports.getMoreImages = (date) =>
     db.query(
-        `SElect * from images where created_at < '${date}' order by created_at DESC LIMIT 6`
+        `SElect * from images where created_at < '${date}' order by created_at DESC LIMIT 12`
     );
 
 module.exports.uploadImages = (url, username, title, description) => {

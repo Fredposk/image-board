@@ -40,6 +40,7 @@
                             </div>
                             <a href="/">
                                 <img
+                                    id="logo"
                                     class="absolute hidden w-32 m-1 mr-4 cursor-pointer hover:opacity-70 h-7 top-3 right-2 sm:block md:h-8 md:w-36"
                                     src="/spiced.png"
                             /></a>
@@ -204,10 +205,11 @@
                     class="sticky z-10 px-4 py-1 mx-auto bg-gray-200 shadow-2xl lg:py-2 lg:px-6 bottom-3 lg:bottom-4 rounded-3xl max-w-max"
                 >
                     <div class="flex items-center space-x-4 lg:space-x-5">
-                        <img
-                            class="w-6 h-6 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
-                            src="/home.svg"
-                        />
+                        <a href="#logo">
+                            <img
+                                class="w-6 h-6 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
+                                src="/home.svg"
+                        /></a>
                         <a href="#searchbar">
                             <img
                                 class="w-6 h-6 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
@@ -245,7 +247,7 @@
         <!-- Modal component -->
 
         <script type="text/x-template" id="modal">
-                        <div class="sticky z-40 bg-gray-200 border-2 border-black rounded-lg w-72 lg:w-96">
+                        <div class="sticky z-40 bg-gray-200 border-2 border-black rounded-lg w-72 md:w-80 lg:w-96 ">
                         <div>
                             <!-- Upper nav -->
                         <span class="flex items-center justify-between py-3 ml-3 space-x-4">
@@ -282,7 +284,7 @@
                                         class="w-6 h-6 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
                                         src="/user.svg"
                                     /></div>
-                            <div> <a target="_blank"  :href="modalImage.url"><img
+                            <div> <a target="_blank" :href="modalImage.url"><img
                                         class="w-6 h-6 transform cursor-pointer -rotate-12 lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
                                         src="/send.svg"
                                     /></a></div>
@@ -308,27 +310,32 @@
         <!-- Here starts the comment component -->
         <script type="text/x-template" id="comments">
 
-            <div class="relative top-0 z-50">
-                        <h1 class="bg-purple-800 bold"></h1>
-                        <div class="flex flex-col">
-                            <textarea class="my-1 commentBox" v-model="commentArea" name="comments" id="comments" placeholder=" Leave a comment"></textarea>
-                            <input class="my-1 commentBox" v-model="username" type="text" name="username" id="username" placeholder="username">
-                            <button class="submitBtn" @click="postcomment">Click to post</button>
-                            <svg
-                                            v-if="isWaiting"
-                                            class="w-4 h-4 ml-2 fill-current animate-spin"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path
-                                                d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"
-                                            />
-                                        </svg>
-                        </div>
-                        <ul v-for="comment in reversedComments">
-                            <li class="bg-gray-100">{{comment.username}}: {{comment.comment}} - {{new Date(comment.commented_at).toLocaleDateString('en-GB')}}</li>
-                        </ul>
-                        </div>
+                                <div class="relative rounded-b-lg">
+                                            <h1 class="bg-purple-800 bold"></h1>
+                                            <div class="flex flex-col">
+                                                <textarea class="my-1 commentBox" v-model="commentArea" name="comments" id="comments" placeholder=" Leave a comment"></textarea>
+                                                <input class="my-1 commentBox" v-model="username" type="text" name="username" id="username" placeholder="username">
+                                                <button class="submitBtn" @click="postcomment">Click to post</button>
+                                                <svg
+                                                                v-if="isWaiting"
+                                                                class="w-4 h-4 ml-2 fill-current animate-spin"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 20 20"
+                                                            >
+                                                                <path
+                                                                    d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"
+                                                                />
+                                                            </svg>
+                                            </div>
+
+            <!-- This is the comments box -->
+                    <ul v-for="comment in reversedComments" class="bg-gray-100 border border-black shadow-lg hover:bg-purple-100 ">
+                        <li class="flex flex-wrap items-center justify-between p-1 text-xs text-gray-800 hover:bg-purple-100 lg:text-sm">
+                        <div> <div class="ml-1 font-semibold underline">{{comment.username}}:</div>  <div class="ml-2 font-mono antialiased">{{comment.comment}}</div></div> <div class="p-1 italic"> {{new Date(comment.commented_at).toLocaleDateString('en-GB')}}</div>
+                        </li>
+
+                    </ul>
+                                                            </div>
         </script>
 
         <!-- here ends the comment component-->
