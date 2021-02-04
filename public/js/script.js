@@ -17,6 +17,9 @@
                 this.postDate = data.data.date;
             } catch (err) {
                 console.log('err in /-Component: ', err);
+                this.$emit('close');
+                this.isCommentOpen = false;
+                this.commentId = undefined;
             }
         },
         methods: {
@@ -89,7 +92,7 @@
             isOpen: false,
             isLoading: false,
             isLiked: undefined,
-            selectedImage: undefined,
+            selectedImage: location.hash.slice(1),
             modelOpened: false,
             searchbar: '',
             lastImage: '',
@@ -108,8 +111,14 @@
                 this.isSearching = false;
                 console.log('err in /images: ', err);
             }
+            if (location.hash) {
+                // console.log(location.hash);
+                this.selectedImage = location.hash.slice(1);
+                this.modelOpened = true;
+            }
             window.addEventListener('hashchange', () => {
                 console.log(location.hash.slice(1));
+                this.selectedImage = location.hash.slice(1);
             });
         },
         computed: {
@@ -151,7 +160,7 @@
             closeMe: function () {
                 // this.selectedImage = undefined;
                 this.modelOpened = false;
-                this.selectedImage = location.hash;
+                this.selectedImage = undefined;
             },
             loadMore: function () {
                 axios
