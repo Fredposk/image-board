@@ -245,7 +245,9 @@
             </div>
             <!-- This is the modal -->
             <div class="flex justify-center">
-                <div class="fixed z-30 top-4">
+                <div
+                    class="fixed z-30 overflow-y-auto scrollFix scrollbar-hidden top-4 bottom-4"
+                >
                     <modelcomponent
                         v-if="modelOpened"
                         :id="selectedImage"

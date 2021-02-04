@@ -108,6 +108,9 @@
                 this.isSearching = false;
                 console.log('err in /images: ', err);
             }
+            window.addEventListener('hashchange', () => {
+                console.log(location.hash.slice(1));
+            });
         },
         computed: {
             reversedImages() {
@@ -146,8 +149,9 @@
                 this.file = e.target.files[0];
             },
             closeMe: function () {
-                this.selectedImage = undefined;
+                // this.selectedImage = undefined;
                 this.modelOpened = false;
+                this.selectedImage = location.hash;
             },
             loadMore: function () {
                 axios
@@ -159,7 +163,7 @@
                         ].created_at;
                     })
                     .catch((err) => {
-                        console.log('error getting more images');
+                        console.log(err, 'error getting more images');
                     });
             },
             searchfunction: async function () {
