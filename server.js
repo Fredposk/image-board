@@ -103,6 +103,7 @@ app.get('/search/:query', async (req, res) => {
         const allResults = await db.getAllImages();
         const titles = allResults.rows.map((image) => image.title);
         const descriptions = allResults.rows.map((image) => image.description);
+        const usernames = allResults.rows.map((image) => image.username);
 
         const filteredTitles = titles.filter((title) => {
             const regex = new RegExp(query, 'gi');
@@ -112,9 +113,14 @@ app.get('/search/:query', async (req, res) => {
             const regex = new RegExp(query, 'gi');
             return description.match(regex);
         });
+        const filteredUsernames = usernames.filter((names) => {
+            const regex = new RegExp(query, 'gi');
+            return names.match(regex);
+        });
         const title = filteredTitles.join(`', '`);
         const description = filteredDescriptions.join(`', '`);
-        const searchResults = await db.searchDb(title, description);
+        const username = filteredUsernames.join(`', '`);
+        const searchResults = await db.searchDb(title, description, username);
         res.json(searchResults.rows);
     } catch (error) {
         console.log('no success in search');

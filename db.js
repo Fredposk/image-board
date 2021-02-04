@@ -10,9 +10,9 @@ module.exports.getImages = () =>
 module.exports.getAllImages = () =>
     db.query(`SELECT * FROM images ORDER BY created_at DESC;`);
 
-module.exports.searchDb = (title, description) =>
+module.exports.searchDb = (title, description, username) =>
     db.query(
-        `SELECT * from images where title in ('${title}') OR description in ('${description}') order by created_at DESC;`
+        `SELECT * from images where title in ('${title}') OR description in ('${description}') OR username in ('${username}') order by created_at DESC;`
     );
 
 module.exports.getMoreImages = (date) =>

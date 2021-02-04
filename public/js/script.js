@@ -164,19 +164,6 @@
             },
             searchfunction: async function () {
                 this.isSearching = true;
-
-                if (this.searchbar === '') {
-                    try {
-                        const data = await axios.get('/images');
-                        this.images = data.data;
-                        this.lastImage = this.images[
-                            this.images.length - 1
-                        ].created_at;
-                        this.isSearching = false;
-                    } catch (err) {
-                        console.log('err in /images2: ', err);
-                    }
-                }
                 axios
                     .get(`/search/${this.searchbar}`)
                     .then((response) => {
