@@ -15,7 +15,6 @@ app.use(express.static('dist'));
 app.use(morgan('dev'));
 // json handling
 app.use(express.json());
-
 // body-parser
 app.use(express.urlencoded({ extended: false }));
 
@@ -35,7 +34,7 @@ app.get('(/loadmore/:date)', async (req, res) => {
         const images = await db.getMoreImages(date);
         res.json(images.rows);
     } catch (error) {
-        console.log('no success loading from server');
+        console.log('no success loading more from server');
         res.status(404).json({ success: false });
     }
 });
