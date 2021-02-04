@@ -266,12 +266,12 @@
                         <div class="sticky z-40 bg-gray-200 border-2 border-black rounded-lg w-72 md:w-80 lg:w-96 ">
                         <div>
                             <!-- Upper nav -->
-                        <span class="flex items-center justify-between py-3 ml-3 space-x-4">
+                        <span class="flex items-center justify-between py-3 ml-3">
 
                             <img class="object-cover border-2 border-red-600 rounded-full cursor-pointer hover:opacity-90 h-9 w-9" src="https://source.unsplash.com/random">
 
             <div class="flex truncate">
-                            <p class="text-sm italic font-bold text-black font-italic">{{modalImage.username}}:</p><p class="ml-1 text-sm font-normal tracking-wide text-gray-800 truncate">
+                            <p class="ml-1 text-sm italic font-bold text-black font-italic">{{modalImage.username}}:</p><p class="ml-1 text-sm font-normal tracking-wide text-gray-800 truncate">
                                 {{modalImage.title}}</p>
             </div>
 
@@ -283,7 +283,7 @@
 
                         </span>
                         <!-- Main img area,  - mobile-first-->
-                          <img class="object-cover mx-auto shadow" :src="modalImage.url" alt="">
+                          <img class="object-cover px-2 mx-auto shadow" :src="modalImage.url" alt="">
                           <!-- <img class="object-cover max-w-sm mx-auto shadow md:max-w-lg" :src="modalImage.url" alt=""> -->
                           <!-- Title and date area -->
                           <div class="flex justify-between py-2 border-b border-black shadow-md">
