@@ -17,7 +17,7 @@ module.exports.searchDb = (title, description, username) =>
 
 module.exports.getMoreImages = (date) =>
     db.query(
-        `SElect * from images where created_at < '${date}' order by created_at DESC LIMIT 12`
+        `SElect * from images where created_at < '${date}' order by created_at DESC LIMIT 6`
     );
 
 module.exports.uploadImages = (url, username, title, description) => {

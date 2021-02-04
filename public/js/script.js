@@ -198,6 +198,7 @@
                         this.images.length - 1
                     ].created_at;
                     this.isSearching = false;
+                    this.searchbar = '';
                 } catch (err) {
                     this.isSearching = false;
                     console.log('err in /images: ', err);
