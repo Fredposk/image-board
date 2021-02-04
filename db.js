@@ -7,6 +7,14 @@ const db = spicedPg(
 module.exports.getImages = () =>
     db.query(`SELECT * FROM images ORDER BY created_at DESC limit 12;`);
 
+module.exports.getAllImages = () =>
+    db.query(`SELECT * FROM images ORDER BY created_at DESC;`);
+
+module.exports.searchDb = (title, description) =>
+    db.query(
+        `SELECT * from images where title in ('${title}') OR description in ('${description}') order by created_at DESC;`
+    );
+
 module.exports.getMoreImages = (date) =>
     db.query(
         `SElect * from images where created_at < '${date}' order by created_at DESC LIMIT 12`

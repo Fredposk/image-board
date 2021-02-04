@@ -37,9 +37,20 @@
                                     class="relative z-30 mr-1 cursor-pointer w-7 h-7 lg:w-8 lg:h-8 opacity-70"
                                     src="/share-01.svg"
                                 />
+                                <svg
+                                    v-if="isSearching"
+                                    class="w-6 h-6 ml-2 fill-current animate-spin"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"
+                                    />
+                                </svg>
                             </div>
-                            <a href="/">
+                            <a href="#">
                                 <img
+                                    @click="refreshPages"
                                     id="logo"
                                     class="absolute hidden w-32 m-1 mr-4 cursor-pointer hover:opacity-70 h-7 top-3 right-2 sm:block md:h-8 md:w-36"
                                     src="/spiced.png"
@@ -143,6 +154,7 @@
                             </svg>
                             <!-- ends the heart SVG -->
                             <!-- This is the fullscreen SVG -->
+                            <!-- <a :href="'#' + item.id"> -->
                             <svg
                                 @click="selectedImage = item.id, modelOpened = true"
                                 class="absolute top-0 right-0 z-10 w-4 h-4 m-1 cursor-pointer fill-current hover:opacity-50 bottom-7"
@@ -152,6 +164,7 @@
                                     d="M2.8 15.8L0 13v7h7l-2.8-2.8 4.34-4.32-1.42-1.42L2.8 15.8zM17.2 4.2L20 7V0h-7l2.8 2.8-4.34 4.32 1.42 1.42L17.2 4.2zm-1.4 13L13 20h7v-7l-2.8 2.8-4.32-4.34-1.42 1.42 4.33 4.33zM4.2 2.8L7 0H0v7l2.8-2.8 4.32 4.34 1.42-1.42L4.2 2.8z"
                                 />
                             </svg>
+                            <!-- </a> -->
                             <!-- ends the fullscreen SVG -->
                             <!-- This is the image -->
                             <img
@@ -205,8 +218,9 @@
                     class="sticky z-10 px-4 py-1 mx-auto bg-gray-200 shadow-2xl lg:py-2 lg:px-6 bottom-3 lg:bottom-4 rounded-3xl max-w-max"
                 >
                     <div class="flex items-center space-x-4 lg:space-x-5">
-                        <a href="#logo">
+                        <a href="#">
                             <img
+                                @click="refreshPages"
                                 class="w-6 h-6 cursor-pointer lg:h-7 lg:w-7 opacity-70 hover:opacity-95"
                                 src="/home.svg"
                         /></a>
@@ -252,7 +266,7 @@
                             <!-- Upper nav -->
                         <span class="flex items-center justify-between py-3 ml-3 space-x-4">
 
-                            <img class="object-cover border-2 border-pink-700 rounded-full cursor-pointer hover:opacity-90 h-9 w-9" src="https://source.unsplash.com/random">
+                            <img class="object-cover border-2 border-red-600 rounded-full cursor-pointer hover:opacity-90 h-9 w-9" src="https://source.unsplash.com/random">
 
             <div class="flex truncate">
                             <p class="text-sm italic font-bold text-black font-italic">{{modalImage.username}}:</p><p class="ml-1 text-sm font-normal tracking-wide text-gray-800 truncate">

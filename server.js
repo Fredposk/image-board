@@ -23,7 +23,10 @@ app.get('/images', async (req, res) => {
     try {
         const images = await db.getImages();
         res.json(images.rows);
-    } catch (error) {}
+    } catch (error) {
+        console.log('no success getting images server');
+        res.status(404).json({ success: false });
+    }
 });
 
 app.get('(/loadmore/:date)', async (req, res) => {
@@ -32,8 +35,8 @@ app.get('(/loadmore/:date)', async (req, res) => {
         const images = await db.getMoreImages(date);
         res.json(images.rows);
     } catch (error) {
-        console.log('no success');
-        res.json({ success: false });
+        console.log('no success loading from server');
+        res.status(404).json({ success: false });
     }
 });
 
@@ -48,8 +51,8 @@ app.get('/modal/:modalImage', async (req, res) => {
 
         res.json({ data: modal.rows, date: `${date2}` });
     } catch (error) {
-        console.log('no success');
-        res.json({ success: false });
+        console.log('no success getting modal data');
+        res.status(404).json({ success: false });
     }
 });
 
@@ -66,8 +69,8 @@ app.post('/upload', uploader.single('file'), s3.upload, async (req, res) => {
         );
         res.json(tableData.rows[0]);
     } catch (error) {
-        console.log('no success');
-        res.json({ success: false });
+        console.log('no success uploading img');
+        res.status(404).json({ success: false });
     }
 });
 
@@ -77,8 +80,8 @@ app.get('/comment/:id', async (req, res) => {
         const allComments = await db.getComments(id);
         res.json(allComments.rows);
     } catch (error) {
-        console.log('no success');
-        res.json({ success: false });
+        console.log('no success getting comments');
+        res.status(404).json({ success: false });
     }
 });
 
@@ -89,7 +92,33 @@ app.post('/comment', async (req, res) => {
         console.log(newComment.rows[0]);
         res.json(newComment.rows[0]);
     } catch (error) {
-        res.json({ success: false });
+        console.log('no success posting comment');
+        res.status(404).json({ success: false });
+    }
+});
+
+app.get('/search/:query', async (req, res) => {
+    const { query } = req.params;
+    try {
+        const allResults = await db.getAllImages();
+        const titles = allResults.rows.map((image) => image.title);
+        const descriptions = allResults.rows.map((image) => image.description);
+
+        const filteredTitles = titles.filter((title) => {
+            const regex = new RegExp(query, 'gi');
+            return title.match(regex);
+        });
+        const filteredDescriptions = descriptions.filter((description) => {
+            const regex = new RegExp(query, 'gi');
+            return description.match(regex);
+        });
+        const title = filteredTitles.join(`', '`);
+        const description = filteredDescriptions.join(`', '`);
+        const searchResults = await db.searchDb(title, description);
+        res.json(searchResults.rows);
+    } catch (error) {
+        console.log('no success in search');
+        res.status(404).json({ success: false });
     }
 });
 

@@ -14,7 +14,6 @@
             try {
                 const data = await axios.get(`/modal/${this.id}`);
                 this.modalImage = data.data.data[0];
-                // console.log(this.modalImage);
                 this.postDate = data.data.date;
             } catch (err) {
                 console.log('err in /-Component: ', err);
@@ -94,15 +93,19 @@
             modelOpened: false,
             searchbar: '',
             lastImage: '',
+            isSearching: false,
         },
 
         // mounted is a lifecycle method that runs when the Vue instance renders
         mounted: async function () {
+            this.isSearching = true;
             try {
                 const data = await axios.get('/images');
                 this.images = data.data;
                 this.lastImage = this.images[this.images.length - 1].created_at;
+                this.isSearching = false;
             } catch (err) {
+                this.isSearching = false;
                 console.log('err in /images: ', err);
             }
         },
@@ -115,7 +118,6 @@
         // methods will store ALL the functions we create!!!
         methods: {
             clickHandler: function () {
-                // console.log(this);
                 const fd = new FormData();
                 fd.append('title', this.title);
                 fd.append('description', this.description);
@@ -155,19 +157,51 @@
                         this.lastImage = this.images[
                             this.images.length - 1
                         ].created_at;
-                        // console.log(response);
                     })
                     .catch((err) => {
                         console.log('error getting more images');
                     });
             },
-            searchfunction: function () {
-                // console.log('search Images', this.searchbar);
-                const searchResults = this.images.filter((image) => {
-                    const regex = new RegExp(this.searchbar, 'gi');
-                    image.title.match(regex) || image.description.match(regex);
-                });
-                console.log(searchResults);
+            searchfunction: async function () {
+                this.isSearching = true;
+
+                if (this.searchbar === '') {
+                    try {
+                        const data = await axios.get('/images');
+                        this.images = data.data;
+                        this.lastImage = this.images[
+                            this.images.length - 1
+                        ].created_at;
+                        this.isSearching = false;
+                    } catch (err) {
+                        console.log('err in /images2: ', err);
+                    }
+                }
+                axios
+                    .get(`/search/${this.searchbar}`)
+                    .then((response) => {
+                        console.log(response);
+                        this.images = response.data;
+                        this.isSearching = false;
+                    })
+                    .catch((err) => {
+                        console.log(err, 'error in search');
+                        this.isSearching = false;
+                    });
+            },
+            refreshPages: async function () {
+                this.isSearching = true;
+                try {
+                    const data = await axios.get('/images');
+                    this.images = data.data;
+                    this.lastImage = this.images[
+                        this.images.length - 1
+                    ].created_at;
+                    this.isSearching = false;
+                } catch (err) {
+                    this.isSearching = false;
+                    console.log('err in /images: ', err);
+                }
             },
         },
     });
