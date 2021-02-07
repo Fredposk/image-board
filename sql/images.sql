@@ -25,10 +25,10 @@ INSERT INTO images (url, username, title, description) VALUES (
 );
 
 INSERT INTO images (url, username, title, description) VALUES (
-    'https://s3.amazonaws.com/imageboard/XCv4AwJdm6QuzjenFPKJocpipRNNMwze.jpg',
-    'discoduck',
-    'To be or not to be',
-    'That is the question.'
+    'https://kuckelhaus-imageboard.s3.amazonaws.com/zKdoAb6oRpGTz0WJU8mD2_l8GO7ECkWB.jpg',
+    'derekThompson',
+    'McWay Falls',
+    'beach in Cali'
 );
 
 DROP TABLE IF EXISTS comments;
