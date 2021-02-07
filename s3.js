@@ -39,6 +39,6 @@ exports.upload = (req, res, next) => {
         })
         .catch((err) => {
             // uh oh
-            console.log(err);
+            console.log(err, 'error in s3');
         });
 };
