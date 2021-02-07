@@ -1,12 +1,13 @@
 DROP TABLE IF EXISTS images;
 
 CREATE TABLE images(
-    id SERIAL PRIMARY KEY,
+   id UUID DEFAULT uuid_generate_v4 (),
     url VARCHAR NOT NULL,
     username VARCHAR NOT NULL,
     title VARCHAR NOT NULL,
     description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
 );
 
 INSERT INTO images (url, username, title, description) VALUES (
@@ -33,9 +34,9 @@ INSERT INTO images (url, username, title, description) VALUES (
 DROP TABLE IF EXISTS comments;
 CREATE TABLE comments (
     comments_id UUID DEFAULT uuid_generate_v4 (),
-     comment VARCHAR NOT NULL CHECK (comment != ''),
-  	username VARCHAR NOT NULL CHECK (username != ''),
-  commented_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  id UUID NOT NULL REFERENCES images(id),
+    comment VARCHAR NOT NULL CHECK (comment != ''),
+    username VARCHAR NOT NULL CHECK (username != ''),
+    commented_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    id UUID NOT NULL REFERENCES images(id),
     PRIMARY KEY (comments_id)
 );
